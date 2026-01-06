@@ -1,13 +1,41 @@
+let response;
+let preimage = document.querySelector('#preimage');
+preload = document.querySelector('#preload');
+postimage = document.querySelector('#postimage');
+clearload = document.querySelector('#clearload');
+current = document.querySelector('#current');
+
 (async () => {
-    let response = await fetchImagesStatic();
+    response = await fetchImagesStatic();
     console.log(response)
     response.sort(() => Math.random() - 0.5);
-    response.forEach(image => {
-        document.querySelector('.image-container').innerHTML += `
-            <div class="snap-center">
-                <img class="max-w-screen h-fit md:max-w-[70vw] lg:max-w-[70vw] xl:max-w-[60vw]"
-                    src="${image.download_url}">
-            </div>
-        `;
-    });
+    setTimeout(() => {
+        document.querySelector('.image-container > p').classList.add('opacity-0');
+    }, 1000)
+
+    currentImage = 5;
+    current.src = response[currentImage].download_url
+    clearload.src = response[currentImage - 2].download_url
+    postimage.src = response[currentImage - 1].download_url
+    preimage.src = response[currentImage + 1].download_url
+    preload.src = response[currentImage + 2].download_url
 })()
+
+document.querySelector('#left').addEventListener('click', () => {
+    // temp = preimage.classList
+    // postimage.classList = current.classList
+    // current.classList = preimage.classList
+    // preimage.classList = preload.classList
+    postimage.classList = current.classList
+    current.classList = preimage.classList
+    preimage.classList = preload.classList
+
+})
+document.querySelector('#right').addEventListener('click', () => {
+    // postimage.classList = current.classList
+    // current.classList = preimage.classList
+    // preimage.classList = preload.classList 
+    preimage.classList = current.classList
+    current.classList = postimage.classList
+
+})
